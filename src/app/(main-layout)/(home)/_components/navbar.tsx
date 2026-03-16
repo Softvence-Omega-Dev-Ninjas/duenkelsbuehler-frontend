@@ -132,11 +132,12 @@ export function Navbar() {
             <Button
               variant="outline"
               className="font-work-sans rounded-full px-8 py-2.5 h-auto hover:scale-105 transition-transform"
+              asChild
             >
-              Log In
+              <Link href="/login">Log In</Link>
             </Button>
-            <Button className="font-work-sans rounded-full px-8 py-2.5 h-auto hover:scale-105 transition-transform">
-              Sign Up
+            <Button className="font-work-sans rounded-full px-8 py-2.5 h-auto hover:scale-105 transition-transform" asChild>
+              <Link href="/sign-up">Sign Up</Link>
             </Button>
           </motion.div>
 
@@ -182,15 +183,15 @@ export function Navbar() {
                   <Button
                     variant="outline"
                     className="font-work-sans w-full rounded-full h-12"
-                    onClick={() => setOpen(false)}
+                    asChild
                   >
-                    Log In
+                    <Link href="/login" onClick={() => setOpen(false)}>Log In</Link>
                   </Button>
                   <Button
                     className="font-work-sans w-full rounded-full h-12"
-                    onClick={() => setOpen(false)}
+                    asChild
                   >
-                    Sign Up
+                    <Link href="/sign-up" onClick={() => setOpen(false)}>Sign Up</Link>
                   </Button>
                 </div>
               </div>
