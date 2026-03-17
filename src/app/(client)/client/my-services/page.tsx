@@ -3,7 +3,15 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Bookmark, Circle, ShieldCheck, ShieldAlert } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Bookmark,
+  MessageCircle,
+  ShieldCheck,
+  ShieldAlert,
+} from "lucide-react";
 
 interface ServiceProvider {
   id: number;
@@ -14,18 +22,90 @@ interface ServiceProvider {
 }
 
 const MOCK: ServiceProvider[] = [
-  { id: 1,  name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: true,  description: "Corporate lawyer specializing in mergers and aquisitions." },
-  { id: 2,  name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: false, description: "Corporate baddie." },
-  { id: 3,  name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: false, description: "Marketing Wizard" },
-  { id: 4,  name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: true,  description: "Marketing Wizard" },
-  { id: 5,  name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: false, description: "Marketing Wizard" },
-  { id: 6,  name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: true,  description: "Marketing Wizard" },
-  { id: 7,  name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: true,  description: "Marketing Wizard" },
-  { id: 8,  name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: false, description: "Marketing Wizard" },
-  { id: 9,  name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: true,  description: "Marketing Wizard" },
-  { id: 10, name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: false, description: "Marketing Wizard" },
-  { id: 11, name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: false, description: "Corporate baddie." },
-  { id: 12, name: "Vanessa R.", avatar: "/images/logo/Logo2.png", verified: true,  description: "Marketing Wizard" },
+  {
+    id: 1,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: true,
+    description: "Corporate lawyer specializing in mergers and aquisitions.",
+  },
+  {
+    id: 2,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: false,
+    description: "Corporate baddie.",
+  },
+  {
+    id: 3,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: false,
+    description: "Marketing Wizard",
+  },
+  {
+    id: 4,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: true,
+    description: "Marketing Wizard",
+  },
+  {
+    id: 5,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: false,
+    description: "Marketing Wizard",
+  },
+  {
+    id: 6,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: true,
+    description: "Marketing Wizard",
+  },
+  {
+    id: 7,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: true,
+    description: "Marketing Wizard",
+  },
+  {
+    id: 8,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: false,
+    description: "Marketing Wizard",
+  },
+  {
+    id: 9,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: true,
+    description: "Marketing Wizard",
+  },
+  {
+    id: 10,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: false,
+    description: "Marketing Wizard",
+  },
+  {
+    id: 11,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: false,
+    description: "Corporate baddie.",
+  },
+  {
+    id: 12,
+    name: "Vanessa R.",
+    avatar: "/images/user/user_avatar.png",
+    verified: true,
+    description: "Marketing Wizard",
+  },
 ];
 
 const PAGE_SIZE_OPTIONS = [5, 10, 20];
@@ -37,15 +117,23 @@ const containerVariants = {
 
 const rowVariants = {
   hidden: { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" as const } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  },
 };
 
 export default function ClientMyServicesPage() {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
   const totalPages = Math.ceil(MOCK.length / pageSize);
-  const paginated = MOCK.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const paginated = MOCK.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
 
   const getPageNumbers = () => {
     const pages: (number | "...")[] = [];
@@ -54,7 +142,11 @@ export default function ClientMyServicesPage() {
     } else {
       pages.push(1);
       if (currentPage > 3) pages.push("...");
-      for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+      for (
+        let i = Math.max(2, currentPage - 1);
+        i <= Math.min(totalPages - 1, currentPage + 1);
+        i++
+      ) {
         pages.push(i);
       }
       if (currentPage < totalPages - 2) pages.push("...");
@@ -83,7 +175,9 @@ export default function ClientMyServicesPage() {
       >
         <span className="font-work-sans text-sm font-medium">Sl</span>
         <span className="font-work-sans text-sm font-medium">Name</span>
-        <span className="font-work-sans text-sm font-medium text-center">Action</span>
+        <span className="font-work-sans text-sm font-medium text-center">
+          Action
+        </span>
       </motion.div>
 
       {/* Table Rows */}
@@ -106,11 +200,19 @@ export default function ClientMyServicesPage() {
 
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 bg-gray-200">
-                <Image src={sp.avatar} alt={sp.name} width={40} height={40} className="object-cover w-full h-full" />
+                <Image
+                  src={sp.avatar}
+                  alt={sp.name}
+                  width={40}
+                  height={40}
+                  className="object-cover w-full h-full"
+                />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-0.5">
-                  <span className="font-work-sans text-sm font-semibold text-[#181D27]">{sp.name}</span>
+                  <span className="font-work-sans text-sm font-semibold text-[#181D27]">
+                    {sp.name}
+                  </span>
                   {sp.verified ? (
                     <span className="flex items-center gap-1 font-work-sans text-xs text-[#16A34A]">
                       <ShieldCheck className="h-3.5 w-3.5" /> Verified
@@ -121,16 +223,25 @@ export default function ClientMyServicesPage() {
                     </span>
                   )}
                 </div>
-                <p className="font-work-sans text-xs text-[#414651]">{sp.description}</p>
+                <p className="font-work-sans text-xs text-[#414651]">
+                  {sp.description}
+                </p>
               </div>
             </div>
 
             <div className="flex items-center justify-center gap-3">
-              <motion.button whileTap={{ scale: 0.85 }} className="text-[#181D27] hover:text-[#414651] transition-colors">
+              <motion.button
+                whileTap={{ scale: 0.85 }}
+                className="text-[#181D27] hover:text-[#414651] transition-colors"
+              >
                 <Bookmark className="h-4 w-4 fill-[#181D27]" />
               </motion.button>
-              <motion.button whileTap={{ scale: 0.85 }} className="text-[#181D27] hover:text-[#414651] transition-colors">
-                <Circle className="h-4 w-4 fill-[#181D27]" />
+              <motion.button
+                whileTap={{ scale: 0.85 }}
+                onClick={() => router.push(`/client/messages?spId=${sp.id}`)}
+                className="text-[#181D27] hover:text-[#414651] transition-colors"
+              >
+                <MessageCircle className="h-4 w-4 fill-[#181D27]" />
               </motion.button>
             </div>
           </motion.div>
@@ -148,11 +259,18 @@ export default function ClientMyServicesPage() {
           <span className="font-work-sans text-sm text-[#414651]">Show</span>
           <select
             value={pageSize}
-            onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+              setCurrentPage(1);
+            }}
             aria-label="Entries per page"
             className="h-8 px-2 rounded-lg border border-gray-200 font-work-sans text-sm text-[#181D27] focus:outline-none cursor-pointer"
           >
-            {PAGE_SIZE_OPTIONS.map((s) => <option key={s} value={s}>{s}</option>)}
+            {PAGE_SIZE_OPTIONS.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
           </select>
           <span className="font-work-sans text-sm text-[#414651]">entries</span>
         </div>
@@ -169,19 +287,26 @@ export default function ClientMyServicesPage() {
 
           {getPageNumbers().map((page, i) =>
             page === "..." ? (
-              <span key={`ellipsis-${i}`} className="w-9 h-9 flex items-center justify-center font-work-sans text-sm text-[#414651]">...</span>
+              <span
+                key={`ellipsis-${i}`}
+                className="w-9 h-9 flex items-center justify-center font-work-sans text-sm text-[#414651]"
+              >
+                ...
+              </span>
             ) : (
               <motion.button
                 key={page}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setCurrentPage(page as number)}
                 className={`w-9 h-9 rounded-full font-work-sans text-sm font-medium transition-colors ${
-                  currentPage === page ? "bg-[#181D27] text-white" : "border border-gray-200 text-[#414651] hover:bg-gray-50"
+                  currentPage === page
+                    ? "bg-[#181D27] text-white"
+                    : "border border-gray-200 text-[#414651] hover:bg-gray-50"
                 }`}
               >
                 {page}
               </motion.button>
-            )
+            ),
           )}
 
           <motion.button

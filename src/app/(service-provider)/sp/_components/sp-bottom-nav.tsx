@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 import { Wifi, ShoppingBag, User } from "lucide-react";
 
 const bottomItems = [
-  { label: "Connect", href: "/sp/messages", icon: Wifi },
-  { label: "Transact", href: "/sp/my-services", icon: ShoppingBag },
+  { label: "Connect", href: "/sp/connect", icon: Wifi },
+  { label: "Transact", href: "/sp/transact", icon: ShoppingBag },
   { label: "Me", href: "/sp/settings", icon: User },
 ];
 
@@ -45,19 +45,14 @@ export function SPBottomNav() {
         return (
           <Link key={href} href={href} className="flex flex-col items-center gap-1">
             <motion.div whileTap={{ scale: 0.9 }}>
-              <Icon
-                className={`h-5 w-5 transition-colors ${
-                  isActive ? "text-[#181D27]" : "text-[#9CA3AF]"
+              <span
+                className={`font-work-sans text-xs transition-colors ${
+                  isActive ? "text-[#181D27] font-semibold" : "text-[#9CA3AF]"
                 }`}
-              />
+              >
+                {label}
+              </span>
             </motion.div>
-            <span
-              className={`font-work-sans text-xs transition-colors ${
-                isActive ? "text-[#181D27] font-semibold" : "text-[#9CA3AF]"
-              }`}
-            >
-              {label}
-            </span>
           </Link>
         );
       })}

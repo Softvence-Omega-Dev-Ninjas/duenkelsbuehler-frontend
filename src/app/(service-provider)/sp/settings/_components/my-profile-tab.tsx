@@ -20,10 +20,14 @@ const profileSchema = z.object({
 type ProfileForm = z.infer<typeof profileSchema>;
 
 export function MyProfileTab() {
-  const [avatarUrl, setAvatarUrl] = useState("/images/logo/Logo2.png");
+  const [avatarUrl, setAvatarUrl] = useState("/images/user/user_avatar.png");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<ProfileForm>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
     defaultValues: { firstName: "", lastName: "", email: "" },
   });
@@ -50,7 +54,13 @@ export function MyProfileTab() {
       <div className="flex flex-col items-center mb-8">
         <div className="relative mb-4">
           <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-white shadow-md">
-            <Image src={avatarUrl} alt="Profile avatar" width={96} height={96} className="object-cover w-full h-full" />
+            <Image
+              src={avatarUrl}
+              alt="Profile avatar"
+              width={96}
+              height={96}
+              className="object-cover w-full h-full"
+            />
           </div>
           <button
             type="button"
@@ -59,9 +69,19 @@ export function MyProfileTab() {
           >
             <Pencil className="h-3.5 w-3.5" />
           </button>
-          <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleAvatarChange}
+          />
         </div>
-        <Button type="button" onClick={() => fileInputRef.current?.click()} className="rounded-full bg-[#181D27] hover:bg-[#181D27]/90 font-work-sans font-semibold px-8 h-10">
+        <Button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="rounded-full bg-[#181D27] hover:bg-[#181D27]/90 font-work-sans font-semibold px-8 h-10"
+        >
           Edit
         </Button>
       </div>
@@ -69,25 +89,64 @@ export function MyProfileTab() {
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div className="space-y-2">
-          <Label className="font-work-sans font-bold text-sm text-[#181D27]">First Name <span className="text-red-500">*</span></Label>
-          <Input {...register("firstName")} placeholder="Enter First Name" className="h-12 rounded-xl border-gray-200 font-work-sans" aria-invalid={!!errors.firstName} />
-          {errors.firstName && <p className="font-work-sans text-xs text-red-500">● {errors.firstName.message}</p>}
+          <Label className="font-work-sans font-bold text-sm text-[#181D27]">
+            First Name <span className="text-red-500">*</span>
+          </Label>
+          <Input
+            {...register("firstName")}
+            placeholder="Enter First Name"
+            className="h-12 rounded-xl border-gray-200 font-work-sans"
+            aria-invalid={!!errors.firstName}
+          />
+          {errors.firstName && (
+            <p className="font-work-sans text-xs text-red-500">
+              ● {errors.firstName.message}
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
-          <Label className="font-work-sans font-bold text-sm text-[#181D27]">Last Name <span className="text-red-500">*</span></Label>
-          <Input {...register("lastName")} placeholder="Enter Last Name" className="h-12 rounded-xl border-gray-200 font-work-sans" aria-invalid={!!errors.lastName} />
-          {errors.lastName && <p className="font-work-sans text-xs text-red-500">● {errors.lastName.message}</p>}
+          <Label className="font-work-sans font-bold text-sm text-[#181D27]">
+            Last Name <span className="text-red-500">*</span>
+          </Label>
+          <Input
+            {...register("lastName")}
+            placeholder="Enter Last Name"
+            className="h-12 rounded-xl border-gray-200 font-work-sans"
+            aria-invalid={!!errors.lastName}
+          />
+          {errors.lastName && (
+            <p className="font-work-sans text-xs text-red-500">
+              ● {errors.lastName.message}
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
-          <Label className="font-work-sans font-bold text-sm text-[#181D27]">Email <span className="text-red-500">*</span></Label>
-          <Input {...register("email")} type="email" placeholder="Enter your email" className="h-12 rounded-xl border-gray-200 font-work-sans" aria-invalid={!!errors.email} />
-          {errors.email && <p className="font-work-sans text-xs text-red-500">● {errors.email.message}</p>}
+          <Label className="font-work-sans font-bold text-sm text-[#181D27]">
+            Email <span className="text-red-500">*</span>
+          </Label>
+          <Input
+            {...register("email")}
+            type="email"
+            placeholder="Enter your email"
+            className="h-12 rounded-xl border-gray-200 font-work-sans"
+            aria-invalid={!!errors.email}
+          />
+          {errors.email && (
+            <p className="font-work-sans text-xs text-red-500">
+              ● {errors.email.message}
+            </p>
+          )}
         </div>
 
         <div className="flex justify-end pt-2">
-          <Button type="submit" className="rounded-full bg-[#181D27] hover:bg-[#181D27]/90 font-work-sans font-semibold px-8 h-12">Save Profile</Button>
+          <Button
+            type="submit"
+            className="rounded-full bg-[#181D27] hover:bg-[#181D27]/90 font-work-sans font-semibold px-8 h-12"
+          >
+            Save Profile
+          </Button>
         </div>
       </form>
     </motion.div>

@@ -29,7 +29,7 @@ export function PaymentsTab() {
       className="flex flex-col"
     >
       {/* Sub-Tab Buttons */}
-      <div className="flex flex-wrap gap-3 mb-8">
+      <div className="flex flex-wrap justify-center gap-3 mb-8">
         {subTabs.map(({ key, label }) => (
           <motion.button
             key={key}

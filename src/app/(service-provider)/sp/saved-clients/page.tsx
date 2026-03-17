@@ -4,13 +4,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Bookmark,
-  Circle,
+  MessageCircle,
   ChevronLeft,
   ChevronRight,
   ShieldCheck,
   ShieldAlert,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Client {
   id: number;
@@ -26,84 +27,84 @@ const mockClients: Client[] = [
     name: "Vanessa R.",
     description: "Corporate lawyer specializing in mergers and aquisitions.",
     verified: true,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 2,
     name: "Vanessa R.",
     description: "Corporate baddie.",
     verified: false,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 3,
     name: "Vanessa R.",
     description: "Marketing Wizard",
     verified: false,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 4,
     name: "Vanessa R.",
     description: "Marketing Wizard",
     verified: true,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 5,
     name: "Vanessa R.",
     description: "Marketing Wizard",
     verified: false,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 6,
     name: "Vanessa R.",
     description: "Corporate lawyer specializing in mergers and aquisitions.",
     verified: true,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 7,
     name: "Vanessa R.",
     description: "Marketing Wizard",
     verified: false,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 8,
     name: "Vanessa R.",
     description: "Corporate baddie.",
     verified: true,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 9,
     name: "Vanessa R.",
     description: "Marketing Wizard",
     verified: false,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 10,
     name: "Vanessa R.",
     description: "Marketing Wizard",
     verified: true,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 11,
     name: "Vanessa R.",
     description: "Corporate baddie.",
     verified: false,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
   {
     id: 12,
     name: "Vanessa R.",
     description: "Marketing Wizard",
     verified: true,
-    avatar: "/images/logo/Logo2.png",
+    avatar: "/images/user/user_avatar.png",
   },
 ];
 
@@ -124,6 +125,7 @@ const rowVariants = {
 };
 
 export default function SavedClientsPage() {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
@@ -242,9 +244,12 @@ export default function SavedClientsPage() {
               </motion.button>
               <motion.button
                 whileTap={{ scale: 0.85 }}
+                onClick={() =>
+                  router.push(`/sp/messages?clientId=${client.id}`)
+                }
                 className="text-[#181D27] hover:text-[#414651] transition-colors"
               >
-                <Circle className="h-4 w-4 fill-[#181D27]" />
+                <MessageCircle className="h-4 w-4 fill-[#181D27]" />
               </motion.button>
             </div>
           </motion.div>
@@ -268,7 +273,8 @@ export default function SavedClientsPage() {
               setCurrentPage(1);
             }}
             aria-label="Entries per page"
-            className="h-8 px-2 rounded-lg border border-gray-200 font-work-sans text-sm text-[#181D27] focus:outline-none cursor-pointer">
+            className="h-8 px-2 rounded-lg border border-gray-200 font-work-sans text-sm text-[#181D27] focus:outline-none cursor-pointer"
+          >
             {PAGE_SIZE_OPTIONS.map((s) => (
               <option key={s} value={s}>
                 {s}
