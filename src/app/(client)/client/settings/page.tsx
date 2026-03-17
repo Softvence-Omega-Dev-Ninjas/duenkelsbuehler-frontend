@@ -35,7 +35,7 @@ export default function ClientSettingsPage() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, delay: 0.1 }}
-        className="flex border-b border-gray-200 mb-8 overflow-x-auto"
+        className="flex justify-center border-b border-gray-200 mb-8 overflow-x-auto"
       >
         {tabs.map(({ key, label }) => (
           <button
@@ -57,20 +57,22 @@ export default function ClientSettingsPage() {
       </motion.div>
 
       {/* Tab Content */}
-      <AnimatePresence mode="wait">
-        {activeTab === "profile" && <ClientMyProfileTab />}
+      <div className="flex-1 overflow-y-auto">
+        <AnimatePresence mode="wait">
+          {activeTab === "profile" && <ClientMyProfileTab />}
 
-        {activeTab === "payment-methods" && (
-          <motion.div key="payment-methods" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.25 }}
-            className="flex items-center justify-center py-16">
-            <p className="font-work-sans text-sm text-[#9CA3AF]">Payment Methods coming soon...</p>
-          </motion.div>
-        )}
+          {activeTab === "payment-methods" && (
+            <motion.div key="payment-methods" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.25 }}
+              className="flex items-center justify-center py-16">
+              <p className="font-work-sans text-sm text-[#9CA3AF]">Payment Methods coming soon...</p>
+            </motion.div>
+          )}
 
-        {activeTab === "transaction-history" && <ClientTransactionHistoryTab />}
+          {activeTab === "transaction-history" && <ClientTransactionHistoryTab />}
 
-        {activeTab === "dispute" && <ClientDisputeTab />}
-      </AnimatePresence>
+          {activeTab === "dispute" && <ClientDisputeTab />}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

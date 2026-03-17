@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImagePlus, ArrowUp } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { LeaveAristoPayModal } from "./_components/leave-aristopay-modal";
 
 interface Message {
@@ -13,24 +14,112 @@ interface Message {
   image?: string;
 }
 
-const CONTACT = {
-  name: "Maria Gonzalez Castillo",
-  handle: "@Vanessa92",
-  avatar: "/images/logo/Logo2.png",
+const CLIENTS: Record<
+  number,
+  { name: string; handle: string; avatar: string }
+> = {
+  1: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r1",
+    avatar: "/images/user/user_avatar.png",
+  },
+  2: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r2",
+    avatar: "/images/user/user_avatar.png",
+  },
+  3: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r3",
+    avatar: "/images/user/user_avatar.png",
+  },
+  4: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r4",
+    avatar: "/images/user/user_avatar.png",
+  },
+  5: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r5",
+    avatar: "/images/user/user_avatar.png",
+  },
+  6: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r6",
+    avatar: "/images/user/user_avatar.png",
+  },
+  7: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r7",
+    avatar: "/images/user/user_avatar.png",
+  },
+  8: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r8",
+    avatar: "/images/user/user_avatar.png",
+  },
+  9: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r9",
+    avatar: "/images/user/user_avatar.png",
+  },
+  10: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r10",
+    avatar: "/images/user/user_avatar.png",
+  },
+  11: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r11",
+    avatar: "/images/user/user_avatar.png",
+  },
+  12: {
+    name: "Vanessa R.",
+    handle: "@vanessa_r12",
+    avatar: "/images/user/user_avatar.png",
+  },
 };
 
-const MY_AVATAR = "/images/logo/Logo2.png";
+const DEFAULT_CONTACT = {
+  name: "Maria Gonzalez Castillo",
+  handle: "@Vanessa92",
+  avatar: "/images/user/user_avatar.png",
+};
+
+const MY_AVATAR = "/images/user/user_avatar.png";
 
 const INITIAL_MESSAGES: Message[] = [
   { id: 1, sender: "me", text: "Tell us nowww 🤩🤩🤩" },
   { id: 2, sender: "them", text: "Tell us nowww 🤩🤩🤩" },
 ];
 
-export default function MessagesPage() {
+/* ── Animation variants ── */
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.35 } },
+};
+
+const bubbleVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.15 } },
+};
+
+const listVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
+};
+
+function MessagesContent() {
+  const searchParams = useSearchParams();
+  const clientId = Number(searchParams.get("clientId"));
+  const contact = CLIENTS[clientId] ?? DEFAULT_CONTACT;
+
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
   const [leaveModalOpen, setLeaveModalOpen] = useState(false);
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -42,13 +131,15 @@ export default function MessagesPage() {
     const trimmed = input.trim();
     if (!trimmed) return;
 
-    // Check if message contains a URL
     const urlRegex = /https?:\/\/[^\s]+/;
     if (urlRegex.test(trimmed)) {
       setPendingUrl(trimmed);
       setLeaveModalOpen(true);
       return;
     }
+
+    setSending(true);
+    setTimeout(() => setSending(false), 300);
 
     setMessages((prev) => [
       ...prev,
@@ -76,13 +167,18 @@ export default function MessagesPage() {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="flex items-center gap-3 px-6 py-4 bg-white border-b border-gray-100 rounded-t-2xl">
+    <div className="flex flex-col h-full overflow-hidden">
+      {/* ── Header ── */}
+      <motion.div
+        variants={fadeIn}
+        initial="hidden"
+        animate="visible"
+        className="flex items-center gap-3 px-6 py-4 bg-white border-b border-gray-100 rounded-t-2xl"
+      >
         <div className="w-12 h-12 rounded-full overflow-hidden border border-gray-200 shrink-0">
           <Image
-            src={CONTACT.avatar}
-            alt={CONTACT.name}
+            src={contact.avatar}
+            alt={contact.name}
             width={48}
             height={48}
             className="object-cover w-full h-full"
@@ -90,69 +186,45 @@ export default function MessagesPage() {
         </div>
         <div>
           <p className="font-work-sans text-base font-bold text-[#181D27]">
-            {CONTACT.name}
+            {contact.name}
           </p>
           <p className="font-work-sans text-sm text-[#9CA3AF]">
-            {CONTACT.handle}
+            {contact.handle}
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Messages area */}
-      <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-5 bg-gray-50/50">
+      {/* ── Messages area ── */}
+      <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-4 bg-gray-50/50">
+        {/* Initial messages stagger in */}
+        <motion.div
+          variants={listVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col gap-4"
+        >
+          {INITIAL_MESSAGES.map((msg) => (
+            <MessageBubble key={msg.id} msg={msg} contact={contact} isInitial />
+          ))}
+        </motion.div>
+
+        {/* New messages animate in individually */}
         <AnimatePresence initial={false}>
-          {messages.map((msg) => (
-            <motion.div
-              key={msg.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
-              className={`flex items-end gap-2.5 ${msg.sender === "me" ? "flex-row-reverse" : "flex-row"}`}
-            >
-              {/* Avatar */}
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-200 shrink-0 mb-1">
-                <Image
-                  src={msg.sender === "me" ? MY_AVATAR : CONTACT.avatar}
-                  alt="avatar"
-                  width={40}
-                  height={40}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-
-              {/* Bubble */}
-              <div
-                className={`max-w-xs lg:max-w-sm rounded-2xl px-4 py-3 bg-[#2E7D32] ${
-                  msg.sender === "me" ? "rounded-br-sm" : "rounded-bl-sm"
-                }`}
-              >
-                <p
-                  className={`font-work-sans text-xs font-bold mb-1 text-white ${msg.sender === "them" ? "" : ""}`}
-                >
-                  {msg.sender === "me" ? "You" : CONTACT.name}
-                </p>
-                {msg.image ? (
-                  <Image
-                    src={msg.image}
-                    alt="uploaded"
-                    width={200}
-                    height={150}
-                    className="rounded-lg object-cover"
-                  />
-                ) : (
-                  <p className="font-work-sans text-sm text-white leading-relaxed">
-                    {msg.text}
-                  </p>
-                )}
-              </div>
-            </motion.div>
+          {messages.slice(INITIAL_MESSAGES.length).map((msg) => (
+            <MessageBubble key={msg.id} msg={msg} contact={contact} />
           ))}
         </AnimatePresence>
+
         <div ref={bottomRef} />
       </div>
 
-      {/* Input area */}
-      <div className="bg-white border border-gray-200 rounded-2xl mx-0 mb-0 px-5 py-4 flex flex-col gap-3">
+      {/* ── Input area ── */}
+      <motion.div
+        variants={fadeIn}
+        initial="hidden"
+        animate="visible"
+        className="bg-white border border-gray-200 rounded-2xl px-5 py-4 flex flex-col gap-3"
+      >
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -175,25 +247,32 @@ export default function MessagesPage() {
             aria-label="Upload image"
             onChange={handleImageUpload}
           />
-          <button
+
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.88 }}
             onClick={() => fileRef.current?.click()}
             className="w-10 h-10 rounded-full bg-[#181D27] flex items-center justify-center hover:bg-[#2d3748] transition-colors"
             aria-label="Upload image"
           >
             <ImagePlus size={18} className="text-white" />
-          </button>
-          <button
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.85 }}
+            animate={sending ? { scale: [1, 1.2, 0.9, 1] } : {}}
+            transition={{ duration: 0.3 }}
             onClick={sendMessage}
             disabled={!input.trim()}
             className="w-10 h-10 rounded-full bg-[#181D27] flex items-center justify-center hover:bg-[#2d3748] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label="Send message"
           >
             <ArrowUp size={18} className="text-white" />
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Leave AristoPay modal */}
       <LeaveAristoPayModal
         isOpen={leaveModalOpen}
         onClose={() => {
@@ -203,5 +282,80 @@ export default function MessagesPage() {
         onLeave={handleLeave}
       />
     </div>
+  );
+}
+
+/* ── Message Bubble Component ── */
+function MessageBubble({
+  msg,
+  contact,
+  isInitial = false,
+}: {
+  msg: Message;
+  contact: { name: string; avatar: string };
+  isInitial?: boolean;
+}) {
+  const isMe = msg.sender === "me";
+
+  const wrapperVariants = isInitial
+    ? {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.2 } },
+      }
+    : undefined;
+
+  return (
+    <motion.div
+      custom={msg.sender}
+      variants={isInitial ? wrapperVariants : bubbleVariants}
+      initial={isInitial ? "hidden" : "hidden"}
+      animate="visible"
+      exit="exit"
+      className={`flex items-end gap-2.5 ${isMe ? "flex-row-reverse" : "flex-row"}`}
+    >
+      {/* Avatar */}
+      <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-200 shrink-0 mb-1">
+        <Image
+          src={isMe ? MY_AVATAR : contact.avatar}
+          alt="avatar"
+          width={40}
+          height={40}
+          className="object-cover w-full h-full"
+        />
+      </div>
+
+      {/* Bubble */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+        className={`max-w-xs lg:max-w-sm rounded-2xl px-4 py-3 bg-[#2E7D32] shadow-sm ${isMe ? "rounded-br-sm" : "rounded-bl-sm"}`}
+      >
+        <p className="font-work-sans text-xs font-bold mb-1 text-white">
+          {isMe ? "You" : contact.name}
+        </p>
+        {msg.image ? (
+          <Image
+            src={msg.image}
+            alt="uploaded"
+            width={200}
+            height={150}
+            className="rounded-lg object-cover"
+          />
+        ) : (
+          <p className="font-work-sans text-sm text-white leading-relaxed">
+            {msg.text}
+          </p>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={<div className="flex-1" />}>
+      <MessagesContent />
+    </Suspense>
   );
 }

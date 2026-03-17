@@ -27,7 +27,7 @@ export default function SPSettingsPage() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, delay: 0.1 }}
-        className="flex border-b border-gray-200 mb-8"
+        className="flex justify-center border-b border-gray-200 mb-8"
       >
         {(["profile", "payments"] as Tab[]).map((tab) => (
           <button
