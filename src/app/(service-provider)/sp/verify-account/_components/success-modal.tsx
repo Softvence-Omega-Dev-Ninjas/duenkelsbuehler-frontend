@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CrownSVG } from "./shared";
+import { useModalSound } from "@/hooks/use-modal-sound";
 
 interface Props {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function SuccessModal({ isOpen, onDone }: Props) {
+  useModalSound(isOpen);
   return (
     <AnimatePresence>
       {isOpen && (

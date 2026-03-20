@@ -1,10 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useModalSound } from "@/hooks/use-modal-sound";
+
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
 export function DealMakerModal({ isOpen, onClose }: Props) {
+  useModalSound(isOpen);
   const handleDone = () => {
     onClose();
   };

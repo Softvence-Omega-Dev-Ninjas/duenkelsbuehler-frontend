@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -12,6 +12,13 @@ const inputCls = "w-full h-12 border border-gray-200 rounded-xl px-4 font-work-s
 export default function SubscribePage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>("plan");
+
+  useEffect(() => {
+    if (step !== "success") return;
+    const audio = new Audio("/sounds/modal_open_sound.mp3");
+    audio.volume = 0.8;
+    audio.play().catch(() => {});
+  }, [step]);
 
   return (
     <div className="flex flex-col h-full px-6 py-10 items-center justify-center">
