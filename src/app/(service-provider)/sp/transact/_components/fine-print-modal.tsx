@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useModalSound } from "@/hooks/use-modal-sound";
 
 interface Props {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function FinePrintModal({ isOpen, onNext, onSkip }: Props) {
+  useModalSound(isOpen);
   return (
     <AnimatePresence>
       {isOpen && (

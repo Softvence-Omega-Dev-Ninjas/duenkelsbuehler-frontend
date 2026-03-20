@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShieldAlert } from "lucide-react";
@@ -179,6 +179,13 @@ export default function ReviewProposalsPage() {
   const [showKaChing, setShowKaChing] = useState(false);
   const [showRating, setShowRating] = useState(false);
   const [kaChingPhase, setKaChingPhase] = useState<"finalize" | "done">("finalize");
+
+  useEffect(() => {
+    if (!showKaChing) return;
+    const audio = new Audio("/sounds/modal_open_sound.mp3");
+    audio.volume = 0.8;
+    audio.play().catch(() => {});
+  }, [showKaChing]);
 
   const handleAccept = () => {
     if (selected && !selected.verified) {
