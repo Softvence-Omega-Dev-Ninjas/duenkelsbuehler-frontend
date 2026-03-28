@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShieldAlert } from "lucide-react";
@@ -37,6 +37,13 @@ export function ReadyStep({ sp, onDone }: { sp: SP; onDone: () => void }) {
   const [confirmSP, setConfirmSP] = useState(false);
   const [confirmUnverified, setConfirmUnverified] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (!showModal) return;
+    const audio = new Audio("/sounds/modal_open_sound.mp3");
+    audio.volume = 0.8;
+    audio.play().catch(() => {});
+  }, [showModal]);
 
   const canSubmit = confirmSP && (!sp.verified ? confirmUnverified : true);
 

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShieldAlert } from "lucide-react";
+import { RatingModal } from "./_components/rating-modal";
 
 interface Proposal {
   id: number;
@@ -176,9 +177,15 @@ export default function ReviewProposalsPage() {
   const [selected, setSelected] = useState<Proposal | null>(null);
   const [showUnverified, setShowUnverified] = useState(false);
   const [showKaChing, setShowKaChing] = useState(false);
-  const [kaChingPhase, setKaChingPhase] = useState<"finalize" | "done">(
-    "finalize",
-  );
+  const [showRating, setShowRating] = useState(false);
+  const [kaChingPhase, setKaChingPhase] = useState<"finalize" | "done">("finalize");
+
+  useEffect(() => {
+    if (!showKaChing) return;
+    const audio = new Audio("/sounds/modal_open_sound.mp3");
+    audio.volume = 0.8;
+    audio.play().catch(() => {});
+  }, [showKaChing]);
 
   const handleAccept = () => {
     if (selected && !selected.verified) {
@@ -204,6 +211,11 @@ export default function ReviewProposalsPage() {
   };
 
   const handleFinalComplete = () => {
+    setShowRating(true);
+  };
+
+  const handleRatingDone = () => {
+    setShowRating(false);
     setSelected(null);
     setView("grid");
   };
@@ -423,6 +435,14 @@ export default function ReviewProposalsPage() {
             text="Thanks to clients like you, Service Providers get to continue their work worry-free. That's what AristoPay is all about."
             btnLabel="Finalize"
             onAction={handleFinalize}
+          />
+        )}
+        {showRating && selected && (
+          <RatingModal
+            isOpen={showRating}
+            name={selected.name}
+            onSubmit={handleRatingDone}
+            onSkip={handleRatingDone}
           />
         )}
       </AnimatePresence>

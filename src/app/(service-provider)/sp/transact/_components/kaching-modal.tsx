@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useModalSound } from "@/hooks/use-modal-sound";
 
 interface Props {
   isOpen: boolean;
@@ -6,6 +7,7 @@ interface Props {
 }
 
 export function KaChingModal({ isOpen, onFinalize }: Props) {
+  useModalSound(isOpen);
   return (
     <AnimatePresence>
       {isOpen && (
